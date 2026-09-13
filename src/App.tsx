@@ -2,7 +2,6 @@ import { useState, useCallback } from 'react';
 import Navbar from './components/Navbar';
 import HeroSection from './components/HeroSection';
 import AboutSection from './components/AboutSection';
-import ProjectsSection from './components/ProjectsSection';
 import AiSection from './components/AiSection';
 import Footer from './components/Footer';
 import type { AvatarAction, AvatarAppearance, AvatarCommand } from './lib/types';
@@ -23,11 +22,8 @@ export default function App() {
   const handleAvatarCommand = useCallback((cmd: AvatarCommand) => {
     if (cmd.action) {
       setAvatarAction(cmd.action);
-      // Return to idle after one-shot animations
       if (['wave', 'jump', 'dance', 'cartwheel', 'nod', 'shake'].includes(cmd.action)) {
-        setTimeout(() => {
-          setAvatarAction('idle');
-        }, cmd.action === 'cartwheel' ? 4000 : cmd.action === 'dance' ? 5000 : 3000);
+        setTimeout(() => setAvatarAction('idle'), cmd.action === 'cartwheel' ? 4000 : cmd.action === 'dance' ? 5000 : 3000);
       }
     }
     if (cmd.appearance) {
@@ -38,14 +34,15 @@ export default function App() {
   return (
     <div className="min-h-screen bg-dark-bg">
       <Navbar />
-      <HeroSection action={avatarAction} appearance={avatarAppearance} />
-      <AboutSection />
-      <ProjectsSection />
-      <AiSection
-        onAvatarCommand={handleAvatarCommand}
-        avatarAction={avatarAction}
-        avatarAppearance={avatarAppearance}
-      />
+      <main>
+        <HeroSection action={avatarAction} appearance={avatarAppearance} />
+        <AboutSection />
+        <AiSection
+          onAvatarCommand={handleAvatarCommand}
+          avatarAction={avatarAction}
+          avatarAppearance={avatarAppearance}
+        />
+      </main>
       <Footer />
     </div>
   );
